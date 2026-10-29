@@ -1,0 +1,48 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['tasks'])) {
+    $_SESSION['tasks'] = [
+        'Learn Docker',
+        'Build my first task manager',
+        'Publish a project on GitHub'
+    ];
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $task = trim($_POST['task'] ?? '');
+
+    if ($task !== '') {
+        $_SESSION['tasks'][] = $task;
+    }
+
+    header('Location: index.php');
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Task Manager</title>
+</head>
+<body>
+    <h1>My Task Manager</h1>
+
+    <form method="POST">
+        <label for="task">New task:</label>
+        <input type="text" id="task" name="task"
+               placeholder="Enter a task" required>
+        <button type="submit">Add Task</button>
+    </form>
+
+    <h2>My Tasks</h2>
+
+    <ul>
+        <?php foreach ($_SESSION['tasks'] as $task): ?>
+            <li><?= htmlspecialchars($task, ENT_QUOTES, 'UTF-8') ?></li>
+        <?php endforeach; ?>
+    </ul>
+</body>
+</html>
