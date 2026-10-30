@@ -1,8 +1,8 @@
 <?php
-$host = 'database';
-$db   = 'task_manager';
-$user = 'task_app';
-$pass = 'root_dev_password';
+$host = getenv('DB_HOST');
+$db   = getenv('DB_NAME');
+$user = getenv('DB_USER');
+$pass = getenv('DB_PASSWORD');
 
 try {
     $pdo = new PDO(
@@ -17,7 +17,6 @@ try {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Mark a task as completed
     if (isset($_POST['complete_id'])) {
         $id = (int) $_POST['complete_id'];
 
@@ -27,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$id]);
 
     } else {
-        // Add a new task
         $task = trim($_POST['task'] ?? '');
 
         if ($task !== '') {
@@ -41,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: index.php');
     exit;
 }
+
 $stmt = $pdo->query(
     "SELECT id, title, is_completed FROM tasks ORDER BY id DESC"
 );
@@ -86,6 +85,6 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php endif; ?>
         </li>
     <?php endforeach; ?>
-</ul>
+    </ul>
 </body>
 </html>
