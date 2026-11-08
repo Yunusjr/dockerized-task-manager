@@ -18,6 +18,22 @@ The project demonstrates how a web application and its database can run in separ
 
 
 
+Screenshots
+
+
+
+Application Dashboard
+
+
+
+Adding a Task
+
+
+
+Completed Task
+
+
+
 Features
 
 
@@ -42,15 +58,19 @@ Technologies Used
 
 \* PHP
 
-\* MySQL 8
+\* MySQL 8.4
 
 \* HTML
 
 \* CSS
 
+\* Apache
+
 \* Docker
 
 \* Docker Compose
+
+\* Git and GitHub
 
 
 
@@ -62,13 +82,13 @@ The application consists of two main services:
 
 
 
-1\. Web service: Runs the PHP application and serves it through the web server.
+1\. Web service: Runs the PHP application using Apache and serves the application to users.
 
 2\. Database service: Runs MySQL and stores task records.
 
 
 
-Docker Compose manages both services and their communication.
+Docker Compose manages both services and their communication through a dedicated network.
 
 
 
@@ -82,23 +102,31 @@ Project Structure
 
 dockerized-task-manager/
 
+├── database/
+
+│   └── init.sql
+
+├── screenshots/
+
+│   ├── dashboard.png
+
+│   ├── add-task.png
+
+│   └── completed-task.png
+
 ├── src/
 
 │   ├── index.php
 
 │   └── styles.css
 
-├── database/
+├── .env.example
 
-│   └── init.sql
+├── .gitignore
 
 ├── Dockerfile
 
 ├── compose.yaml
-
-├── .env.example
-
-├── .gitignore
 
 └── README.md
 
@@ -138,9 +166,9 @@ cd dockerized-task-manager
 
 
 
-3\. Create a .env file using .env.example as a reference. Configure the required database credentials.
+3\. Create a .env file using .env.example as a reference and configure the required database credentials.
 
-4\. Start the application:
+4\. Build and start the application:
 
 
 
@@ -160,11 +188,19 @@ Stopping the Application
 
 
 
+To stop the containers:
+
+
+
 docker compose down
 
 
 
-To stop the containers while preserving database data, do not remove the named volume.
+The named Docker volume preserves database records when containers are stopped and removed.
+
+
+
+Note: Avoid using docker compose down -v if you want to preserve your database data, because that command removes the named volume.
 
 
 
